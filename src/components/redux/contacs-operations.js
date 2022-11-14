@@ -4,6 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createGlobalStyle } from "styled-components";
 
 
+
 const isDublicate = (name , contacts) => {
 
     const normalizedName = name.toLowerCase();
@@ -41,9 +42,11 @@ export const addContact = createAsyncThunk(
     },
     {
         condition: (data, { getState }) => {
+            console.log('similiar')
             const { contacts } = getState();
             if(isDublicate(data.name, contacts.items)) {
-                return alert(`${data.name}  is already exist`)
+               alert(`${data.name}  is already exist`)
+                return false;
             }
         }
     }

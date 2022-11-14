@@ -3,8 +3,11 @@ import Contact from '../contact';
 import css from './contactList.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts,addContact,removeContact} from '../redux/contacs-operations'
-import { getContacts, getFilter } from '../redux/selectors';
+import { getContacts, getFilter, getLoader } from '../redux/selectors';
 import { useEffect } from "react";
+import { Audio } from  'react-loader-spinner'
+
+
 const ContactsList = () => {
 const dispatch = useDispatch();
  useEffect(() => {
@@ -12,8 +15,9 @@ const dispatch = useDispatch();
     }, [dispatch]);
 
   const  contacts  = useSelector(getContacts);
-  
+  const loader = useSelector(getLoader);
   const filter = useSelector(getFilter)
+  console.log(loader)
   const getVisibleContacts = () => {
    
     const normalizedFilter = filter.toLowerCase();
@@ -25,12 +29,27 @@ const dispatch = useDispatch();
   const visibleContacts = getVisibleContacts();
 
 
-  return (
-    <ul className={css.contactList}>
-      {visibleContacts.map(contact => (
-        <Contact key={contact.id}  data={contact} />
-      ))}
-    </ul>
+  return (<div className='container'>
+    {
+      !loader ?
+        <ul className = {css.contactList} >
+      {visibleContacts.map(contact => (<Contact key={contact.id}  data={contact} />))}
+    </ul >
+        :
+        
+         
+        <Audio 
+          
+          height="100"
+          width="100"
+          color="#4fa94d"
+          ariaLabel="audio-loading"
+          wrapperStyle={{}}
+          wrapperClass={css.loader}
+          visible={true}
+
+        />}
+    </div>
   );
 };
 
